@@ -28,5 +28,4 @@ public class Neighborhoud4Dir implements ComputeNeighborhood {
 			}
 		return r;
 		}
-
 }

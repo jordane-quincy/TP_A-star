@@ -17,12 +17,13 @@ public class NeighborhoudDiagNoObstacle implements ComputeNeighborhood {
 		for(int i=-1; i<2; i++)
 			for(int j=-1; j<2; j++)
 			{
+				if(i==0 && j==0) continue;
 				int xi = x+i; 
 				int yj = y+j;
 				if (xi>=0 && xi<width && yj>=0 && yj<height)
 				{
 					Cell v = ent.getCell(xi,yj);
-					if(i!=0 && j!=0 )
+					if(!v.isContainer())
 					{
 						if (!ent.getCell(xi,y).isContainer() && !ent.getCell(x,yj).isContainer())
 							r.add(v);

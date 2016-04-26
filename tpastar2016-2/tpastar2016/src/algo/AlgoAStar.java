@@ -50,7 +50,7 @@ public class AlgoAStar {
 
 	/**
 	 * initialize the environment
-	 *
+	 * 
 	 * @param width
 	 *            width of the environment
 	 * @param height
@@ -68,7 +68,7 @@ public class AlgoAStar {
 
 	/**
 	 * a* algorithm to find the best path between two states
-	 *
+	 * 
 	 * @param _start
 	 *            initial state
 	 * @param _goal
@@ -102,7 +102,7 @@ public class AlgoAStar {
 			// TODO: closedNodes <- closedNodes U {n}
 			closedNodes.add(n);
 			// construct the list of neighbourgs
-			ArrayList<Cell> nextDoorNeighbours = neighboursAvoidObstacle(n); // neighbours(n);
+			ArrayList<Cell> nextDoorNeighbours = typeNeighborhood.search.getNeighbors(n, ent); // neighbours(n);
 			for (Cell ndn : nextDoorNeighbours) {
 				// if the neighbour has been visited, do not reevaluate it
 				if (closedNodes.contains(ndn)) {
@@ -146,7 +146,7 @@ public class AlgoAStar {
 
 	/**
 	 * compute the distance recorded in the solution
-	 *
+	 * 
 	 * @param solution
 	 *            list of points from start to goal
 	 * @return the distance from start to goal
@@ -169,7 +169,7 @@ public class AlgoAStar {
 	/**
 	 * return the cost from n to c : 10 for a lateral move, 14
 	 * (squareroot(2)*10) for a diagonal move
-	 *
+	 * 
 	 * @param n
 	 *            a node/cell
 	 * @param c
@@ -191,7 +191,7 @@ public class AlgoAStar {
 	/**
 	 * return the cost from n to c : 10 for a longitudinal move, 14
 	 * (squareroot(2)*10) for a diagonal move
-	 *
+	 * 
 	 * @param n
 	 *            a node/cell
 	 * @param c

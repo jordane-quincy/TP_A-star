@@ -16,6 +16,7 @@ public class Neighborhoud4Dir implements ComputeNeighborhood {
 			for(int j=-1; j<2; j++)
 			{
 				if (i==0 && j==0) continue;
+				if (Math.abs(i) == Math.abs(j)) continue;
 				int xi = x+i; 
 				int yj = y+j;
 				if (xi>=0 && xi<ent.getWidth() && yj>=0 && yj<ent.getHeight())

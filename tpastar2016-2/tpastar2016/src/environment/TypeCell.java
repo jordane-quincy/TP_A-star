@@ -3,7 +3,7 @@ package environment;
 public enum TypeCell {
 	HERBE(1.0), 
 	SABLE(1.2), 
-	EAU(1.8),
+	EAU(1.5),
 	OBSTACLE(200);
 	
 	/** cost to walk on the environment*/

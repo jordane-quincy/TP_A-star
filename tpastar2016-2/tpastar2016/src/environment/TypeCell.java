@@ -4,7 +4,7 @@ public enum TypeCell {
 	HERBE(1.0), 
 	SABLE(1.2), 
 	EAU(1.5),
-	OBSTACLE(200);
+	OBSTACLE(20);
 	
 	/** cost to walk on the environment*/
 	private double value;

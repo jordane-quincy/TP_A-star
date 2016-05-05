@@ -117,7 +117,7 @@ public class PanelEnvironment extends JPanel{
 		ArrayList<Cell> solution = ent.getSolution();
 		if(solution!=null)
 		{
-			g2d.setColor(Color.RED);
+			//g2d.setColor(Color.RED);
 			int smaller = (depX<depY?depX:depY);
 			BasicStroke penSize = new BasicStroke(smaller-1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 10f);
 			
@@ -126,6 +126,13 @@ public class PanelEnvironment extends JPanel{
 			Cell c0 = ent.getStart();
 			for(Cell c1:solution)
 			{
+				//On met en bleu les murs qu'on traverse
+				if (c1.isContainer()) {
+					g2d.setColor(Color.BLUE);
+				}
+				else {
+					g2d.setColor(Color.RED);
+				}
 				g2d.drawLine(c0.getX() * depX + depX/2, c0.getY() * depY + depY/2, c1.getX() * depX + depX/2, c1.getY()  * depY + depY/2);
 				c0 = c1;
 			}

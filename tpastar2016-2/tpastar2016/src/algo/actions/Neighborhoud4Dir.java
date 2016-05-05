@@ -25,10 +25,13 @@ public class Neighborhoud4Dir implements ComputeNeighborhood {
 				int xi = x + i;
 				int yj = y + j;
 				if (xi >= 0 && xi < ent.getWidth() && yj >= 0 && yj < ent.getHeight()) {
-					Cell v = ent.getCell(xi, yj);
-					if (!v.isContainer()) {
-						r.add(v);
-					}
+					Cell v = ent.getCell(xi, yj);					
+					//Dans les exercices avancés, on peut passer à travers les murs
+					//On ne check donc plus si la cellule est un mur ou non
+//					if (!v.isContainer()) {
+//						r.add(v);
+//					}
+					r.add(v);					
 				}
 			}
 		}

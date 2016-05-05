@@ -114,7 +114,7 @@ public class AlgoAStar {
 			if (vitesse >= 2) {
 				System.out.println("vitesse de 2 !");
 			}
-			Direction direction = Direction.getDirection(n);
+			Direction direction = Direction.getDirection(ent, n);
 			for (Direction oldDir : directionLst) {
 				if (oldDir != direction) {
 					// changement de cap donc perte de l'inertie

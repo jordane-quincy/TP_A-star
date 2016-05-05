@@ -2,6 +2,7 @@ package algo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import algo.actions.TypeNeighborhood;
 import environment.Cell;
@@ -37,8 +38,11 @@ public class AlgoAStar {
 	/** gui */
 	EnvironmentGui gui;
 
-	/** intertie */
+	/** inertie */
 	int vitesse = 1;
+
+	/** list of direction took */
+	List<Direction> directionLst = new ArrayList<Direction>();
 
 	/**
 	 * initialize the environment (100 x 100 with a density of container +- 20%)
@@ -78,6 +82,7 @@ public class AlgoAStar {
 	 *            final state
 	 */
 	ArrayList<Cell> algoASTAR(Cell _start, Cell _goal) {
+		directionLst.clear();
 		start = _start;
 		goal = _goal;
 		// list of visited nodes
@@ -104,8 +109,24 @@ public class AlgoAStar {
 			freeNodes.remove(n);
 			// TODO: closedNodes <- closedNodes U {n}
 			closedNodes.add(n);
+			// inertie que si 3 deplacement dans la meme direction
+			vitesse = (TypeNeighborhood.BB8 == typeNeighborhood && directionLst.size() >= 3) ? 2 : 1;
+			if (vitesse >= 2) {
+				System.out.println("vitesse de 2 !");
+			}
+			Direction direction = Direction.getDirection(n);
+			for (Direction oldDir : directionLst) {
+				if (oldDir != direction) {
+					// changement de cap donc perte de l'inertie
+					directionLst.clear();
+					break;
+				}
+			}
+			directionLst.add(direction);
+
+			Direction curentDirection = directionLst.isEmpty() ? null : directionLst.get(directionLst.size() - 1);
 			// construct the list of neighbourgs
-			ArrayList<Cell> nextDoorNeighbours = typeNeighborhood.search.getNeighbors(n, ent, vitesse); // neighbours(n);
+			ArrayList<Cell> nextDoorNeighbours = typeNeighborhood.search.getNeighbors(n, ent, vitesse, curentDirection); // neighbours(n);
 			for (Cell ndn : nextDoorNeighbours) {
 				// if the neighbour has been visited, do not reevaluate it
 				if (closedNodes.contains(ndn)) {

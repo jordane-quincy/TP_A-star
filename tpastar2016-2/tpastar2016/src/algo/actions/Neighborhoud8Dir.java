@@ -2,6 +2,7 @@ package algo.actions;
 
 import java.util.ArrayList;
 
+import algo.Direction;
 import environment.Cell;
 import environment.Entrepot;
 
@@ -9,7 +10,7 @@ import environment.Entrepot;
 public class Neighborhoud8Dir implements ComputeNeighborhood {
 
 	@Override
-	public ArrayList<Cell> getNeighbors(Cell n, Entrepot ent, int vitesse) {
+	public ArrayList<Cell> getNeighbors(Cell n, Entrepot ent, int vitesse, Direction direction) {
 		ArrayList<Cell> r = new ArrayList<Cell>();
 		int x = n.getX();
 		int y = n.getY();

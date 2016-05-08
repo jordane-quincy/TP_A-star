@@ -49,8 +49,6 @@ public enum Direction {
 			}
 		}
 
-		System.out.println("Direction " + dir + " (" + diffX + "," + diffY + ") ");
-
 		return dir;
 	}
 

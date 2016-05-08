@@ -41,6 +41,9 @@ public class AlgoAStar {
 	/** inertie */
 	int vitesse = 1;
 
+	/** current direction */
+	Direction direction;
+
 	/** list of direction took */
 	List<Direction> directionLst = new ArrayList<Direction>();
 
@@ -101,6 +104,7 @@ public class AlgoAStar {
 		while (!freeNodes.isEmpty()) {
 			// choose the node having a F minimal
 			Cell n = chooseBestNode();
+
 			// stop if the node is the goal
 			if (isGoal(n)) {
 				return rebuildPath(n);
@@ -111,18 +115,6 @@ public class AlgoAStar {
 			closedNodes.add(n);
 			// inertie que si 3 deplacement dans la meme direction
 			vitesse = (TypeNeighborhood.BB8 == typeNeighborhood && directionLst.size() >= 3) ? 2 : 1;
-			if (vitesse >= 2) {
-				System.out.println("vitesse de 2 !");
-			}
-			Direction direction = Direction.getDirection(ent, n);
-			for (Direction oldDir : directionLst) {
-				if (oldDir != direction) {
-					// changement de cap donc perte de l'inertie
-					directionLst.clear();
-					break;
-				}
-			}
-			directionLst.add(direction);
 
 			Direction curentDirection = directionLst.isEmpty() ? null : directionLst.get(directionLst.size() - 1);
 			// construct the list of neighbourgs
@@ -156,8 +148,24 @@ public class AlgoAStar {
 					ndn.setG(cost);
 					// TODO : f(ndn) <- g(ndn) + h(ndn)
 					ndn.setF(ndn.getG() + ndn.getH());
+
+					// meilleure cout (temporaire car on n'a pas calculé les
+					// autres cases)
+					direction = Direction.getDirection(ent, n.getX(), n.getY(), ndn.getX(), ndn.getY());
 				}
 			}
+
+			for (Direction oldDir : directionLst) {
+				if (oldDir != direction) {
+					// changement de cap donc perte de l'inertie
+					directionLst.clear();
+					break;
+				}
+			}
+			// après avoir calculer tt le voisinage, on connait la "vrai"
+			// bestCost donc la cellule qui sera prise pour la solution
+			directionLst.add(direction);
+
 		}
 		return null;
 	}

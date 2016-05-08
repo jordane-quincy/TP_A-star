@@ -42,7 +42,8 @@ public class NeighborhoudWithObstacleBB8 implements ComputeNeighborhood {
 					int yj = y + j;
 					if (xi >= 0 && xi < ent.getWidth() && yj >= 0 && yj < ent.getHeight()) {
 						Cell v = ent.getCell(xi, yj);
-						Direction directionDeLaCelluleV = Direction.getDirection(ent, v);
+						Direction directionDeLaCelluleV = Direction.getDirection(ent, n.getX(), n.getY(), v.getX(),
+								v.getY());
 						// meme direction de 1 ou 2 cases
 						if (directionDeLaCelluleV == direction ||
 								// si autour d'une case a gauche ou a droite
@@ -54,12 +55,6 @@ public class NeighborhoudWithObstacleBB8 implements ComputeNeighborhood {
 			}
 		}
 
-		System.out.println("n (" + n.getX() + "," + n.getY() + ") " + direction);
-		if (vitesse >= 2) {
-			for (Cell c : r) {
-				System.out.println("\t" + c.getX() + "," + c.getY());
-			}
-		}
 		return r;
 	}
 

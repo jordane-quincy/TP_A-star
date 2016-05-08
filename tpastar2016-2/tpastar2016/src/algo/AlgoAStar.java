@@ -151,7 +151,7 @@ public class AlgoAStar {
 
 					// meilleure cout (temporaire car on n'a pas calculé les
 					// autres cases)
-					direction = Direction.getDirection(ent, n.getX(), n.getY(), ndn.getX(), ndn.getY());
+					direction = Direction.getDirection(n, ndn);
 				}
 			}
 
@@ -165,6 +165,7 @@ public class AlgoAStar {
 			// après avoir calculer tt le voisinage, on connait la "vrai"
 			// bestCost donc la cellule qui sera prise pour la solution
 			directionLst.add(direction);
+			System.out.println(direction);
 
 		}
 		return null;

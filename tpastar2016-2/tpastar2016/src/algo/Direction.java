@@ -1,26 +1,14 @@
 package algo;
 
 import environment.Cell;
-import environment.Entrepot;
 
 public enum Direction {
 	N(0), NE(45), E(90), SE(135), S(180), SW(225), W(270), NW(315);
 
-	public static Direction getDirection(Entrepot ent, Cell depart) {
-		if (depart == null) {
+	public static Direction getDirection(Cell depart, Cell dest) {
+		if (depart == null || dest == null) {
 			return null;
 		}
-		Cell parent = depart.getParent();
-		if (parent == null) {
-			return null;
-		}
-		return getDirection(ent, depart.getX(), depart.getY(), parent.getX(), parent.getY());
-	}
-
-	public static Direction getDirection(Entrepot ent, int xDep, int yDep, int xFin, int yFin) {
-
-		Cell depart = ent.getCell(xDep, yDep);
-		Cell dest = ent.getCell(xFin, yFin);
 
 		Direction dir = null;
 

@@ -12,28 +12,28 @@ public enum Direction {
 
 		Direction dir = null;
 
-		int diffX = depart.getX() - dest.getX();
-		int diffY = depart.getY() - dest.getY();
+		int diffX = dest.getX() - depart.getX();
+		int diffY = dest.getY() - depart.getY();
 
 		if (diffY <= -1) {
 			dir = N;
 			if (diffX <= -1) {
-				dir = NE;
-			} else if (diffX >= 1) {
 				dir = NW;
-			}
-		} else if (diffY >= 1) {
-			dir = S;
-			if (diffX <= -1) {
-				dir = SE;
 			} else if (diffX >= 1) {
-				dir = SW;
+				dir = NE;
 			}
 		} else if (diffY == 0) {
 			if (diffX <= -1) {
 				dir = W;
 			} else if (diffX >= 1) {
 				dir = E;
+			}
+		} else if (diffY >= 1) {
+			dir = S;
+			if (diffX <= -1) {
+				dir = SW;
+			} else if (diffX >= 1) {
+				dir = SE;
 			}
 		}
 

@@ -108,7 +108,8 @@ public class AlgoAStar {
 			// choose the node having a F minimal
 			Cell n = chooseBestNode();
 
-			System.out.println("Noeud n : " + n + ", parent :" + n.getParent());
+			// System.out.println("Noeud n : " + n + ", parent :" +
+			// n.getParent());
 			// stop if the node is the goal
 			if (isGoal(n)) {
 				return rebuildPath(n);

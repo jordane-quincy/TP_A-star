@@ -2,7 +2,8 @@ package algo;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import algo.actions.TypeNeighborhood;
 import environment.Cell;
@@ -41,11 +42,14 @@ public class AlgoAStar {
 	/** inertie */
 	int vitesse = 1;
 
+	/** cellulle precedente */
+	Cell cellParent;
+
 	/** current direction */
 	Direction direction;
 
-	/** list of direction took */
-	List<Direction> directionLst = new ArrayList<Direction>();
+	/** map entre une cellule et l'historique des directions */
+	Map<Cell, ArrayList<Direction>> mapCellDepartDirectionParents = new HashMap<Cell, ArrayList<Direction>>();
 
 	/**
 	 * initialize the environment (100 x 100 with a density of container +- 20%)
@@ -85,7 +89,6 @@ public class AlgoAStar {
 	 *            final state
 	 */
 	ArrayList<Cell> algoASTAR(Cell _start, Cell _goal) {
-		directionLst.clear();
 		start = _start;
 		goal = _goal;
 		// list of visited nodes
@@ -105,6 +108,7 @@ public class AlgoAStar {
 			// choose the node having a F minimal
 			Cell n = chooseBestNode();
 
+			System.out.println("Noeud n : " + n + ", parent :" + n.getParent());
 			// stop if the node is the goal
 			if (isGoal(n)) {
 				return rebuildPath(n);
@@ -113,12 +117,51 @@ public class AlgoAStar {
 			freeNodes.remove(n);
 			// TODO: closedNodes <- closedNodes U {n}
 			closedNodes.add(n);
-			// inertie que si 3 deplacement dans la meme direction
-			vitesse = (TypeNeighborhood.BB8 == typeNeighborhood && directionLst.size() >= 3) ? 2 : 1;
 
-			Direction curentDirection = directionLst.isEmpty() ? null : directionLst.get(directionLst.size() - 1);
+			if (TypeNeighborhood.BB8 == typeNeighborhood) {
+				ArrayList<Direction> lstDirectionParents = mapCellDepartDirectionParents.get(n) == null
+						? new ArrayList<Direction>() : mapCellDepartDirectionParents.get(n);
+
+				Cell courant = n;
+				cellParent = n.getParent();
+				while (cellParent != null && lstDirectionParents.size() <= 3) {
+					Direction dir = Direction.getDirection(cellParent, courant);
+
+					System.out.println(cellParent + "->" + courant + " : " + dir);
+
+					boolean changementDeCap = (dir != direction);
+					if (!changementDeCap) {
+						for (Direction parentDir : lstDirectionParents) {
+							if (parentDir != direction) {
+								changementDeCap = true;
+								break;
+							}
+						}
+					}
+					if (changementDeCap) {
+						lstDirectionParents.clear();
+					}
+
+					lstDirectionParents.add(dir);
+					direction = dir;
+
+					mapCellDepartDirectionParents.put(n, lstDirectionParents);
+
+					courant = cellParent;
+					cellParent = cellParent.getParent();
+				}
+
+				// inertie que si 3 deplacement dans la meme direction
+				vitesse = (lstDirectionParents.size() >= 3) ? 2 : 1;
+				if (vitesse >= 2) {
+					System.out.println("vitesse de 2 : " + lstDirectionParents);
+				}
+			} else {
+				vitesse = 1;
+				direction = null;
+			}
 			// construct the list of neighbourgs
-			ArrayList<Cell> nextDoorNeighbours = typeNeighborhood.search.getNeighbors(n, ent, vitesse, curentDirection); // neighbours(n);
+			ArrayList<Cell> nextDoorNeighbours = typeNeighborhood.search.getNeighbors(n, ent, vitesse, direction);
 			for (Cell ndn : nextDoorNeighbours) {
 				// if the neighbour has been visited, do not reevaluate it
 				if (closedNodes.contains(ndn)) {
@@ -148,25 +191,8 @@ public class AlgoAStar {
 					ndn.setG(cost);
 					// TODO : f(ndn) <- g(ndn) + h(ndn)
 					ndn.setF(ndn.getG() + ndn.getH());
-
-					// meilleure cout (temporaire car on n'a pas calculé les
-					// autres cases)
-					direction = Direction.getDirection(n, ndn);
 				}
 			}
-
-			for (Direction oldDir : directionLst) {
-				if (oldDir != direction) {
-					// changement de cap donc perte de l'inertie
-					directionLst.clear();
-					break;
-				}
-			}
-			// après avoir calculer tt le voisinage, on connait la "vrai"
-			// bestCost donc la cellule qui sera prise pour la solution
-			directionLst.add(direction);
-			System.out.println(direction);
-
 		}
 		return null;
 	}
@@ -400,8 +426,6 @@ public class AlgoAStar {
 	 *            the typeneighborhood to set
 	 */
 	public void setTypeneighborhood(TypeNeighborhood _typeneighborhood) {
-		// System.err.println(""+this.getClass().getName() + "::"
-		// +_typeneighborhood );
 		typeNeighborhood = _typeneighborhood;
 	}
 
